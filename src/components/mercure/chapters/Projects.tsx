@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 /** 04 — Featured Projects. Each project pins; image opens from a frame, details drift past. */
 export function Projects() {
   return (
-    <section id="projects" data-chapter data-theme="dark" className="relative z-30 bg-obsidian text-ivory md:-mt-[100vh]">
+    <section id="projects" data-chapter data-theme="dark" className="relative z-30 bg-obsidian text-ivory">
       <div className="hairline-gold opacity-60" />
       <div className="mx-auto flex min-h-[70vh] flex-col justify-end px-6 pb-16 pt-32 md:px-12 lg:px-20">
         <p className="type-eyebrow">04 — Featured Projects</p>
