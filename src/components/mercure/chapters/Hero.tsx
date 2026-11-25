@@ -107,9 +107,9 @@ export function Hero() {
           >
             Mercure Homes · Bengaluru
           </motion.p>
-          <h1 className="text-ivory">
-            <RevealLines play={introDone} lines={["Considered design."]} lineClassName="type-display" />
-            <RevealLines play={introDone} delay={0.12} lines={["Crafted for living."]} lineClassName="type-accent text-ochre" />
+          <h1 className="text-ivory [overflow-wrap:normal]">
+            <RevealLines play={introDone} lines={["Considered design."]} lineClassName="type-display !leading-[1.04]" />
+            <RevealLines play={introDone} delay={0.12} lines={["Crafted for living."]} lineClassName="type-accent !leading-[1.13] text-ochre" />
           </h1>
           <motion.div
             className="mt-8 flex flex-col gap-8 md:flex-row md:items-end md:justify-between"
