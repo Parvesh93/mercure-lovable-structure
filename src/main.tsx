@@ -36,10 +36,22 @@ function ContentRouter() {
   const [url, setUrl] = useState(() => window.location.pathname);
   useEffect(() => {
     const onRoute = () => {
-      setUrl(window.location.pathname);
+      const pathname = window.location.pathname;
+      setUrl(pathname);
       window.scrollTo({ top: 0, behavior: "instant" });
-      document.title = "Mercure Homes";
+      const titles: Record<string, string> = {
+        "/": "Mercure Homes | Luxury Interior Atelier Bengaluru",
+        "/about": "About Mercure Homes | Bengaluru Experience Centre",
+        "/collections": "Collections | Mercure Homes Bengaluru",
+        "/projects": "Projects | Mercure Homes Portfolio",
+        "/process": "Our Process | Mercure Homes Bengaluru",
+        "/team": "Our Team | Mercure Homes",
+        "/sdp-group": "SDP Group | Mercure Homes Legacy",
+        "/contact": "Contact | Mercure Homes Bengaluru",
+      };
+      document.title = titles[pathname] ?? (pathname.startsWith("/projects/") ? "Project | Mercure Homes" : titles["/"]);
     };
+    onRoute();
     window.addEventListener("popstate", onRoute);
     return () => window.removeEventListener("popstate", onRoute);
   }, []);
