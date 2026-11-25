@@ -252,7 +252,7 @@ export function CollectionsWheel() {
             {current.name}
           </h3>
           <p className="mt-5 max-w-[420px] text-[15px] leading-[1.9] text-obsidian/65">{current.teaser}</p>
-          <button type="button" onClick={() => scrollTo("#begin")} className="group mt-5 inline-flex items-center gap-5 text-[12px] font-semibold uppercase tracking-[.17em]">
+          <button type="button" onClick={() => scrollTo(current.href)} className="group mt-5 inline-flex items-center gap-5 text-[12px] font-semibold uppercase tracking-[.17em]">
             Explore {current.name} <span className="text-ochre transition-transform duration-300 group-hover:translate-x-1">→</span>
           </button>
         </div>
