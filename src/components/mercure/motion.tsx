@@ -49,6 +49,8 @@ type ScrollApi = {
   setIntroDone: (v: boolean) => void;
   enquiryOpen: boolean;
   setEnquiryOpen: (v: boolean) => void;
+  enquirySubject: string;
+  setEnquirySubject: (value: string) => void;
 };
 
 const ScrollCtx = createContext<ScrollApi | null>(null);
@@ -70,6 +72,7 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
   const [introDone, setIntroDone] = useState(false);
   const [enquiryOpen, setEnquiryOpen] = useState(false);
+  const [enquirySubject, setEnquirySubject] = useState("");
   const reduced = useReducedMotion();
 
   useEffect(() => {
@@ -148,7 +151,7 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
 
   return (
     <ScrollCtx.Provider
-      value={{ lenis: lenisRef.current, scrollTo, ready, introDone, setIntroDone, enquiryOpen, setEnquiryOpen }}
+      value={{ lenis: lenisRef.current, scrollTo, ready, introDone, setIntroDone, enquiryOpen, setEnquiryOpen, enquirySubject, setEnquirySubject }}
     >
       {children}
     </ScrollCtx.Provider>
