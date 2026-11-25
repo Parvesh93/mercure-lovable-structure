@@ -26,25 +26,25 @@ export const CHAPTERS = [
   { id: "begin", num: "08", name: "Begin" },
 ] as const;
 
-/** Inner pages are not built yet — menu items point at their Home chapter. */
+/** Full inner-page navigation in the approved sitemap order. */
 export const PAGES = [
-  { num: "01", label: "About", href: "#statement", material: dMarble },
-  { num: "02", label: "Collections", href: "#wheel", material: dWalnut },
-  { num: "03", label: "Projects", href: "#projects", material: dBrass },
-  { num: "04", label: "Process", href: "#process", material: dLinen },
-  { num: "05", label: "Team", href: "#testimonials", material: dTeak },
-  { num: "06", label: "The SDP Group", href: "#legacy", material: dStone },
-  { num: "07", label: "Contact", href: "#begin", material: dMarble },
+  { num: "01", label: "About", href: "/about", material: dMarble },
+  { num: "02", label: "Collections", href: "/collections", material: dWalnut },
+  { num: "03", label: "Projects", href: "/projects", material: dBrass },
+  { num: "04", label: "Process", href: "/process", material: dLinen },
+  { num: "05", label: "Team", href: "/team", material: dTeak },
+  { num: "06", label: "The SDP Group", href: "/sdp-group", material: dStone },
+  { num: "07", label: "Contact", href: "/contact", material: dMarble },
 ] as const;
 
 export const CONTACT = {
-  phone: "+91 98458 37515",
-  phoneHref: "tel:+919845837515",
-  whatsapp: "https://wa.me/919845837515",
-  email: "hello@mercurehomes.com", // PLACEHOLDER
+  phone: "+91 84310 01900",
+  phoneHref: "tel:+918431001900",
+  whatsapp: "https://wa.me/918431001900",
+  email: "info@mercurehomes.com",
   instagram: "https://instagram.com/", // PLACEHOLDER handle
   address:
-    "1st Floor, Ash Imprem, Vijaya Bank Layout, Devarachikkanahalli South, BTM 2nd Stage, Bengaluru 560060",
+    "Bengaluru, India · Experience Centre address awaiting client confirmation",
 };
 
 export type Project = {
