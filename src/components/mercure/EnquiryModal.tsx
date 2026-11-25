@@ -3,8 +3,14 @@ import { useSite } from "./motion";
 import { CONTACT } from "./data";
 
 export function EnquiryModal() {
-  const { enquiryOpen, setEnquiryOpen } = useSite();
+  const { enquiryOpen, setEnquiryOpen, enquirySubject, setEnquirySubject } = useSite();
   const [form, setForm] = useState({ name:"", phone:"", email:"", message:"" });
+
+  useEffect(() => {
+    if (enquiryOpen && enquirySubject) {
+      setForm(previous => ({ ...previous, message: "Enquiry regarding: " + enquirySubject }));
+    }
+  }, [enquiryOpen, enquirySubject]);
 
   useEffect(() => {
     if (!enquiryOpen) return;
@@ -24,7 +30,7 @@ export function EnquiryModal() {
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const subject = encodeURIComponent("Mercure Homes project enquiry");
+    const subject = encodeURIComponent(enquirySubject ? "Mercure Homes — " + enquirySubject : "Mercure Homes project enquiry");
     const body = encodeURIComponent(
       `Name: ${form.name}\nPhone: ${form.phone}\nEmail: ${form.email}\n\nProject details:\n${form.message}`
     );
@@ -34,7 +40,7 @@ export function EnquiryModal() {
   return (
     <div role="presentation" className="fixed inset-0 z-[110] flex items-center justify-center bg-obsidian/85 p-4 backdrop-blur-md" onMouseDown={(e)=>{ if(e.target===e.currentTarget) setEnquiryOpen(false); }}>
       <div role="dialog" aria-modal="true" aria-labelledby="enquiry-title" className="relative max-h-[92vh] w-full max-w-[720px] overflow-y-auto bg-ivory p-7 text-obsidian sm:p-12">
-        <button type="button" onClick={()=>setEnquiryOpen(false)} aria-label="Close enquiry" className="absolute right-5 top-4 text-3xl text-walnut/70 hover:text-obsidian">×</button>
+        <button type="button" onClick={()=>{ setEnquiryOpen(false); setEnquirySubject(""); }} aria-label="Close enquiry" className="absolute right-5 top-4 text-3xl text-walnut/70 hover:text-obsidian">×</button>
         <p className="type-eyebrow">Begin your project</p>
         <h2 id="enquiry-title" className="font-accent mt-5 text-[clamp(2.6rem,5vw,4rem)] leading-none">Tell us about your space.</h2>
         <form onSubmit={submit} className="mt-10 grid gap-6 sm:grid-cols-2">
