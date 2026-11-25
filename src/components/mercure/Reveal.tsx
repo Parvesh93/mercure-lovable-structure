@@ -22,7 +22,7 @@ export function RevealLines({
   return (
     <span className={cn("block", className)}>
       {lines.map((l, i) => (
-        <span key={i} className="block overflow-hidden pb-[0.08em]">
+        <span key={i} className="block overflow-hidden pt-[0.06em] pb-[0.22em]">
           <motion.span
             className={cn("block", lineClassName)}
             initial={{ y: "110%" }}
