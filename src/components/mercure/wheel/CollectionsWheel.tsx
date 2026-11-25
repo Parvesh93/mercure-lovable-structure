@@ -1,6 +1,8 @@
-import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { COLLECTIONS } from "./collections";
-import { useSite } from "../motion";
+import { registerGsap, useSite } from "../motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 type WheelMode = "ferris" | "armillary" | "orbit";
 const MODES: WheelMode[] = ["ferris", "armillary", "orbit"];
@@ -20,14 +22,24 @@ export function CollectionsWheel() {
   const [active, setActive] = useState(0);
   const [mode, setMode] = useState<WheelMode>("ferris");
   const [reducedMotion, setReducedMotion] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
-  const wheelTime = useRef(0);
+  const rotatingWheelRef = useRef<HTMLDivElement>(null);
+  const pinnedTimelineRef = useRef<ScrollTrigger | null>(null);
   const touchStart = useRef<number | null>(null);
   const current = COLLECTIONS[active];
 
   const select = useCallback((index: number) => {
-    setActive(wrap(index));
-  }, []);
+    const target = wrap(index);
+    // On desktop the scroll position owns the selection and rotation.
+    const trigger = pinnedTimelineRef.current;
+    if (trigger && window.matchMedia("(min-width: 1024px)").matches) {
+      const progress = target / (TOTAL - 1);
+      scrollTo(trigger.start + (trigger.end - trigger.start) * progress, { duration: 1 });
+    } else {
+      setActive(target);
+    }
+  }, [scrollTo]);
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -37,24 +49,55 @@ export function CollectionsWheel() {
     return () => media.removeEventListener("change", update);
   }, []);
 
-  // Wheel navigation only when the pointer is over the wheel itself.
-  // A short cooldown keeps trackpad gestures from jumping multiple collections.
+  // Pin the full collections section while normal page scrolling turns the wheel.
+  // ScrollTrigger supplies the scroll distance and releases the section at the end.
   useEffect(() => {
-    const el = stageRef.current;
-    if (!el) return;
-    const handleWheel = (event: WheelEvent) => {
-      if (Math.abs(event.deltaY) < 12) return;
-      const now = Date.now();
-      if (now - wheelTime.current < 550) {
-        event.preventDefault();
-        return;
-      }
-      wheelTime.current = now;
-      event.preventDefault();
-      setActive((old) => wrap(old + (event.deltaY > 0 ? 1 : -1)));
+    const section = sectionRef.current;
+    const wheel = rotatingWheelRef.current;
+    if (!section || !wheel) return;
+
+    registerGsap();
+    const matchMedia = gsap.matchMedia();
+
+    matchMedia.add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", () => {
+      const context = gsap.context(() => {
+        const animation = gsap.fromTo(
+          wheel,
+          { rotation: 0 },
+          {
+            rotation: -(TOTAL - 1) * (360 / TOTAL),
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top top",
+              end: () => "+=" + Math.round(window.innerHeight * (TOTAL - 1) * 0.85),
+              scrub: 0.65,
+              pin: true,
+              pinSpacing: true,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+              onUpdate: (trigger) => {
+                const index = Math.min(TOTAL - 1, Math.round(trigger.progress * (TOTAL - 1)));
+                setActive((previous) => previous === index ? previous : index);
+              },
+            },
+          }
+        );
+
+        pinnedTimelineRef.current = animation.scrollTrigger ?? null;
+      }, section);
+
+      return () => {
+        pinnedTimelineRef.current = null;
+        context.revert();
+      };
+    });
+
+    // Reduced-motion users retain click navigation without being pinned.
+    return () => {
+      pinnedTimelineRef.current = null;
+      matchMedia.revert();
     };
-    el.addEventListener("wheel", handleWheel, { passive: false });
-    return () => el.removeEventListener("wheel", handleWheel);
   }, []);
 
   useEffect(() => {
@@ -84,6 +127,7 @@ export function CollectionsWheel() {
   return (
     <section
       id="wheel"
+      ref={sectionRef}
       data-chapter
       data-theme="light"
       className="mh-wheel-section relative z-20 isolate min-h-[100svh] overflow-hidden bg-ivory text-obsidian"
@@ -158,8 +202,8 @@ export function CollectionsWheel() {
             style={{ transform: modeTransform, transformStyle: "preserve-3d" }}
           >
             <div
-              className="absolute inset-0 transition-transform duration-[1000ms] ease-[cubic-bezier(.22,1,.36,1)]"
-              style={{ transform: `rotate(${rotation}deg)` }}
+              ref={rotatingWheelRef}
+              className="absolute inset-0 will-change-transform"
             >
               <div className="absolute inset-0 rounded-full border-[2px] border-ochre/70" />
               <div className="absolute inset-[3%] rounded-full border border-ochre/25" />
@@ -196,7 +240,7 @@ export function CollectionsWheel() {
         </div>
 
         {/* Active collection visual: slightly beneath ring, as in reference */}
-        <div aria-live="polite" className="mh-wheel-active absolute bottom-[-5.5vw] left-1/2 z-10 hidden h-[clamp(190px,23vw,360px)] w-[clamp(200px,30vw,430px)] -translate-x-1/2 lg:block">
+        <div aria-live="polite" className="mh-wheel-active absolute bottom-[2vh] left-1/2 z-10 hidden h-[clamp(160px,23vh,270px)] w-[clamp(200px,27vw,390px)] -translate-x-1/2 lg:block">
           <div className="pointer-events-none absolute inset-[10%] rounded-full bg-ochre/[.10] blur-3xl" />
           <img key={current.id} src={current.object} alt={current.name} className="mh-wheel-object relative h-full w-full object-contain object-bottom drop-shadow-[0_20px_22px_rgba(70,43,22,.12)]" />
         </div>
@@ -255,7 +299,7 @@ export function CollectionsWheel() {
           ))}
         </nav>
         <p className="pointer-events-none absolute bottom-7 left-1/2 hidden -translate-x-1/2 text-[10px] font-semibold uppercase tracking-[.18em] text-ochre/75 lg:block">
-          Scroll to turn · Click to explore
+          Scroll to rotate · Five collections
         </p>
       </div>
       {!reducedMotion && <style>{`
