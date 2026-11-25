@@ -44,6 +44,7 @@ export function ProjectsPage(){
 export function ProjectDetailPage({slug}:{slug:string}){
  const {setEnquiryOpen,setEnquirySubject}=useSite();
  const p=projectRows.find(x=>x.slug===slug);
+ useEffect(()=>{ if(slug==="hello-bali"){setEnquirySubject("Hello Bali");setEnquiryOpen(true)} },[slug,setEnquiryOpen,setEnquirySubject]);
  const galleryRef=useRef<HTMLDivElement>(null);const galleryTrack=useRef<HTMLDivElement>(null);
  useEffect(()=>{
   registerGsap();const mm=gsap.matchMedia();
