@@ -163,6 +163,7 @@ function ProjectPanel({ p, index }: { p: Project; index: number }) {
                 {p.caps}
               </h3>
               <p className="mt-3 font-display text-lg tracking-[0.12em] text-ivory/85">{p.name}</p>
+              <a href={"/projects/" + p.slug} className="relative z-30 mt-5 inline-flex w-fit items-center gap-3 border-b border-ochre/70 pb-2 text-xs uppercase tracking-[.16em] text-ivory hover:text-ochre">View project <span>↗</span></a>
             </div>
 
             <div className="flex flex-col gap-5 lg:col-span-5 lg:col-start-8">
