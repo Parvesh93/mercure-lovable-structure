@@ -50,12 +50,14 @@ export function Header() {
   };
 
   const overHero = !solid;
+  const lightText = menu || dark;
   return (
     <>
       <header
         data-theme={dark ? "dark" : "light"}
         className={cn(
-          "fixed inset-x-0 top-0 z-50 transition-[transform,background-color,opacity] duration-300 ease-out",
+          "fixed inset-x-0 top-0 transition-[transform,background-color,opacity] duration-300 ease-out",
+          menu ? "z-[70]" : "z-50",
           hidden && !menu ? "-translate-y-full" : "translate-y-0",
           introDone ? "opacity-100" : "opacity-0",
           !overHero && (dark ? "bg-walnut/90 backdrop-blur-md" : "bg-ivory/92 backdrop-blur-md"),
@@ -68,7 +70,7 @@ export function Header() {
           )}
         >
           <a href="#top" onClick={(e) => (e.preventDefault(), go("#top"))} className="shrink-0">
-            <Logo className={dark ? "text-ivory [&_span]:text-ivory" : ""} />
+            <Logo className={lightText ? "!text-ivory" : "!text-obsidian"} />
           </a>
 
           <nav className="hidden items-center gap-7 xl:flex" aria-label="Primary">
@@ -77,7 +79,10 @@ export function Header() {
                 key={p.label}
                 href={p.href}
                 onClick={(e) => (e.preventDefault(), go(p.href))}
-                className="link-underline type-small text-[0.78rem] uppercase tracking-[0.14em] text-ink"
+                className={cn(
+                  "link-underline type-small text-[0.78rem] uppercase tracking-[0.14em] transition-colors duration-300",
+                  lightText ? "!text-ivory/85 hover:!text-ivory" : "!text-obsidian/80 hover:!text-obsidian",
+                )}
               >
                 {p.label}
               </a>
@@ -87,7 +92,10 @@ export function Header() {
           <div className="flex items-center gap-5">
             <button
               onClick={() => setEnquiryOpen(true)}
-              className="group hidden items-center gap-3 border border-ochre/70 px-5 py-2.5 type-small text-[0.72rem] uppercase tracking-[0.16em] text-ink transition-colors duration-300 hover:bg-ochre hover:text-obsidian sm:inline-flex"
+              className={cn(
+                "group hidden items-center gap-3 border border-ochre/70 px-5 py-2.5 type-small text-[0.72rem] uppercase tracking-[0.16em] transition-colors duration-300 hover:!bg-ochre hover:!text-obsidian sm:inline-flex",
+                lightText ? "!text-ivory" : "!text-obsidian",
+              )}
             >
               Begin your project
               <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
@@ -101,13 +109,13 @@ export function Header() {
               <span
                 className={cn(
                   "h-px w-7 transition-transform duration-500",
-                  menu ? "translate-y-[3.5px] rotate-45 bg-ivory" : "bg-ink",
+                  menu ? "translate-y-[3.5px] rotate-45 bg-ivory" : lightText ? "bg-ivory" : "bg-obsidian",
                 )}
               />
               <span
                 className={cn(
                   "h-px w-7 transition-transform duration-500",
-                  menu ? "-translate-y-[3.5px] -rotate-45 bg-ivory" : "bg-ink",
+                  menu ? "-translate-y-[3.5px] -rotate-45 bg-ivory" : lightText ? "bg-ivory" : "bg-obsidian",
                 )}
               />
             </button>
