@@ -78,6 +78,7 @@ export function Legacy() {
             </ol>
           </div>
 
+          <a href="/sdp-group" className="col-span-12 mt-6 w-fit border-b border-ochre pb-2 text-xs uppercase tracking-[.18em] text-bronze">Discover the SDP Group ↗</a>
           <div className="relative col-span-12 hidden lg:col-span-5 lg:col-start-8 lg:block">
             <div className="absolute inset-0">
               {STATS.map((s, i) => (
