@@ -26,7 +26,7 @@ const anchor = "inline-flex items-center gap-5 border-b border-ochre pb-3 text-x
 function Reveal({ children, className = "" }: { children: ReactNode; className?: string }) {
   return <motion.div {...fade} className={className}>{children}</motion.div>;
 }
-function PageHero({ eyebrow, title, lead, image, dark = false }: { eyebrow: string; title: string; lead: string; image?: string; dark?: boolean }) {
+export function PageHero({ eyebrow, title, lead, image, dark = false }: { eyebrow: string; title: string; lead: string; image?: string; dark?: boolean }) {
   return <section data-header-theme={dark || image ? "dark" : "light"} data-theme={dark || image ? "dark" : "light"} className={"relative flex min-h-[75svh] items-end overflow-hidden pb-20 pt-40 md:min-h-[88svh] md:pb-24 " + (dark || image ? "bg-obsidian text-ivory" : "bg-ivory text-obsidian")}>
     {image && <><img src={image} alt="" className="absolute inset-0 h-full w-full object-cover" /><div className="absolute inset-0 bg-gradient-to-r from-obsidian/85 via-obsidian/55 to-obsidian/20" /></>}
     <div className={frame + " relative z-10"}>
@@ -34,7 +34,7 @@ function PageHero({ eyebrow, title, lead, image, dark = false }: { eyebrow: stri
     </div>
   </section>;
 }
-function EndBand() {
+export function EndBand() {
   const { setEnquiryOpen } = useSite();
   return <section data-theme="dark" className="bg-walnut px-6 py-24 text-center text-ivory md:py-32">
     <p className={goldLabel}>Mercure Homes · Bengaluru</p>
@@ -42,7 +42,7 @@ function EndBand() {
     <button className="mt-9 border border-ochre px-8 py-4 text-xs uppercase tracking-[.2em] text-ivory transition-colors hover:bg-ochre hover:text-obsidian" onClick={() => setEnquiryOpen(true)}>Begin your project ↗</button>
   </section>;
 }
-function PageFooter() {
+export function PageFooter() {
   return <footer data-theme="dark" className="bg-obsidian px-6 py-14 text-ivory/70 md:px-12 lg:px-20">
     <div className="mx-auto flex max-w-[1600px] flex-wrap justify-between gap-12">
       <div><strong className="font-display text-2xl font-normal text-ivory">MERCURE <span className="text-ochre">HOMES</span></strong><p className="mt-3 text-sm">An SDP Group company</p></div>
