@@ -110,6 +110,24 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
   }, [introDone, enquiryOpen, ready]);
 
   const scrollTo: ScrollApi["scrollTo"] = (target, opts = {}) => {
+    // Inner-page destinations are real routes, not CSS selectors.
+    if (typeof target === "string" && target.startsWith("/")) {
+      const destination = new URL(target, window.location.origin);
+      const current = window.location.pathname + window.location.search;
+      if (current !== destination.pathname + destination.search) {
+        history.pushState(null, "", destination.pathname + destination.search);
+        window.dispatchEvent(new PopStateEvent("popstate"));
+      } else {
+        window.scrollTo({ top: 0, behavior: "instant" });
+      }
+      return;
+    }
+    if (typeof target === "string" && target.startsWith("#") && window.location.pathname !== "/") {
+      history.pushState(null, "", "/" + target);
+      window.dispatchEvent(new PopStateEvent("popstate"));
+      window.setTimeout(() => document.querySelector(target)?.scrollIntoView({ behavior: "smooth" }), 80);
+      return;
+    }
     const l = lenisRef.current;
     const el = typeof target === "string" ? document.querySelector<HTMLElement>(target) : target;
     if (!l) {
