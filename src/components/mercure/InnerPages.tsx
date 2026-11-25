@@ -27,7 +27,7 @@ function Reveal({ children, className = "" }: { children: ReactNode; className?:
   return <motion.div {...fade} className={className}>{children}</motion.div>;
 }
 export function PageHero({ eyebrow, title, lead, image, dark = false }: { eyebrow: string; title: string; lead: string; image?: string; dark?: boolean }) {
-  return <section data-header-theme={dark || image ? "dark" : "light"} data-theme={dark || image ? "dark" : "light"} className={"relative flex min-h-[75svh] items-end overflow-hidden pb-20 pt-40 md:min-h-[88svh] md:pb-24 " + (dark || image ? "bg-obsidian text-ivory" : "bg-ivory text-obsidian")}>
+  return <section data-chapter data-header-theme={dark || image ? "dark" : "light"} data-theme={dark || image ? "dark" : "light"} className={"relative flex min-h-[75svh] items-end overflow-hidden pb-20 pt-40 md:min-h-[88svh] md:pb-24 " + (dark || image ? "bg-obsidian text-ivory" : "bg-ivory text-obsidian")}>
     {image && <><img src={image} alt="" className="absolute inset-0 h-full w-full object-cover" /><div className="absolute inset-0 bg-gradient-to-r from-obsidian/85 via-obsidian/55 to-obsidian/20" /></>}
     <div className={frame + " relative z-10"}>
       <Reveal><p className={goldLabel}>{eyebrow}</p><h1 className={editorial + " mt-8 max-w-[1150px]"}>{title}</h1><p className={"mt-8 max-w-[750px] text-[16px] leading-[1.8] " + (dark || image ? "text-ivory/80" : "text-walnut/70")}>{lead}</p></Reveal>
