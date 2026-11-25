@@ -60,6 +60,7 @@ export function Process() {
           </h2>
         </div>
 
+        <a href="/process" className="relative z-10 ml-6 mt-7 inline-block border-b border-ochre pb-2 text-xs uppercase tracking-[.15em] text-ivory md:ml-12 lg:ml-20">See how we work ↗</a>
         <div className={cn("relative", desktop ? "mt-[12vh]" : "mt-14 px-6 pb-24")}>
           <div ref={track} className={cn("relative will-change-transform", desktop ? "flex w-max items-start pl-20 pr-[30vw]" : "flex flex-col gap-12 pl-10")}>
             {/* the connecting line */}
