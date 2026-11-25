@@ -125,6 +125,12 @@ export function Header() {
       </header>
 
       <MenuOverlay open={menu} onGo={go} />
+      {!menu && solid && (
+        <div className="fixed inset-x-0 bottom-0 z-[49] grid grid-cols-2 gap-px border-t border-ochre/40 bg-ochre/40 pb-[env(safe-area-inset-bottom)] shadow-[0_-10px_35px_rgba(26,26,26,.12)] md:hidden">
+          <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" className="bg-ivory px-5 py-4 text-center text-[11px] font-semibold uppercase tracking-[.15em] text-obsidian">WhatsApp</a>
+          <button type="button" onClick={() => setEnquiryOpen(true)} className="bg-walnut px-5 py-4 text-center text-[11px] font-semibold uppercase tracking-[.15em] text-ivory">Book a visit</button>
+        </div>
+      )}
     </>
   );
 }
