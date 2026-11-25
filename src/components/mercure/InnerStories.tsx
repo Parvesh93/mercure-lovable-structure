@@ -42,7 +42,7 @@ export function ProjectsPage(){
 }
 
 export function ProjectDetailPage({slug}:{slug:string}){
- const {setEnquiryOpen}=useSite();
+ const {setEnquiryOpen,setEnquirySubject}=useSite();
  const p=projectRows.find(x=>x.slug===slug);
  const galleryRef=useRef<HTMLDivElement>(null);const galleryTrack=useRef<HTMLDivElement>(null);
  useEffect(()=>{
@@ -64,7 +64,7 @@ export function ProjectDetailPage({slug}:{slug:string}){
   <section className="bg-obsidian py-16 text-ivory"><div className={frame}><p className={eyebrow}>Project gallery</p><div className="mt-8 grid gap-5 md:grid-cols-2">{[p.image,...p.details,p.image,...p.details].slice(0,9).map((img,i)=><motion.figure {...rise} key={i} className={i%4===0?"md:col-span-2":""}><img className={"w-full object-cover "+(i%4===0?"h-[45vh] md:h-[72vh]":"h-[360px] md:h-[500px]")} src={img} alt={p.name+" project detail "+(i+1)}/><figcaption className="mt-3 text-xs text-ivory/65">Material and space study · {String(i+1).padStart(2,"0")}</figcaption></motion.figure>)}</div></div></section>
   <section ref={galleryRef} className="overflow-hidden bg-alabaster py-24 lg:flex lg:h-screen lg:items-center lg:py-0"><div className={frame+" w-full"}><p className={eyebrow}>Material details</p><div ref={galleryTrack} className="mt-8 flex snap-x snap-mandatory gap-5 overflow-x-auto lg:w-max lg:overflow-visible">{p.details.map((img,i)=><figure key={i} className="w-[75vw] max-w-[420px] shrink-0 snap-start lg:w-[33vw]"><img src={img} alt="Material closeup" className="aspect-[4/3] w-full object-cover"/><figcaption className="mt-3 text-xs text-walnut/60">Detail {i+1}</figcaption></figure>)}</div></div></section>
   <section className={frame+" py-24"}><p className={eyebrow}>Materials & collections</p><div className="mt-6 flex flex-wrap gap-4">{relevant.map(c=><a key={c.id} href={c.href} className="border border-ochre/45 px-5 py-3 text-xs uppercase tracking-[.14em] hover:bg-alabaster">{c.name} ↗</a>)}<a href="/sdp-group" className="border border-ochre/45 px-5 py-3 text-xs uppercase tracking-[.14em]">Our heritage ↗</a></div></section>
-  {p.slug==="hello-bali"&&<button onClick={()=>setEnquiryOpen(true)} className="fixed bottom-5 right-5 z-[65] bg-ochre px-5 py-4 text-xs font-semibold uppercase tracking-[.12em] text-obsidian shadow-lg">Enquire about Hello Bali ↗</button>}
+  {p.slug==="hello-bali"&&<button onClick={()=>{setEnquirySubject("Hello Bali");setEnquiryOpen(true)}} className="fixed bottom-5 right-5 z-[65] bg-ochre px-5 py-4 text-xs font-semibold uppercase tracking-[.12em] text-obsidian shadow-lg">Enquire about Hello Bali ↗</button>}
   <a href={"/projects/"+next.slug} className="group relative block overflow-hidden bg-obsidian text-ivory"><img src={next.image} alt="" className="h-[340px] w-full object-cover opacity-50 transition-transform duration-700 group-hover:scale-[1.04]"/><div className="absolute inset-0 flex flex-col items-center justify-center"><p className={eyebrow}>Next project</p><h2 className="mt-4 font-accent text-[clamp(40px,6vw,95px)]">{next.name} ↗</h2></div></a>
  </InnerLayout>;
 }
