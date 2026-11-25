@@ -93,11 +93,13 @@ function ProjectPanel({ p, index }: { p: Project; index: number }) {
           .fromTo(shade, { opacity: 0.72 }, { opacity: 1, duration: 0.35, ease: "none" }, 0)
           .fromTo(copy, { y: 24, opacity: 0.85 }, { y: 0, opacity: 1, duration: 0.2, ease: "power2.out" }, 0);
 
-        // Start the thumbnails outside the right edge, then travel left
-        // until the final thumbnail reaches the right-hand safe area.
+        // Animate the gallery through the middle of the sticky chapter,
+        // then HOLD the final frame before the following project enters.
+        // Ending at "bottom 165%" leaves 65vh of pinned viewing time.
         const rightMargin = () => Math.min(window.innerWidth * 0.08, 125);
-        const startX = () => window.innerWidth - rightMargin();
-        const endX = () => Math.min(0, window.innerWidth - strip.scrollWidth - rightMargin());
+        const startX = () => window.innerWidth * 0.7;
+        const endX = () =>
+          Math.min(0, window.innerWidth - strip.scrollWidth - rightMargin());
 
         gsap.fromTo(
           strip,
@@ -109,8 +111,8 @@ function ProjectPanel({ p, index }: { p: Project; index: number }) {
             scrollTrigger: {
               trigger: root,
               start: "top top",
-              end: "bottom bottom",
-              scrub: 0.65,
+              end: "bottom 165%",
+              scrub: 0.45,
               invalidateOnRefresh: true,
             },
           },
@@ -126,7 +128,7 @@ function ProjectPanel({ p, index }: { p: Project; index: number }) {
   return (
     <div
       ref={rootRef}
-      className="relative h-auto bg-obsidian lg:h-[250vh]"
+      className="relative h-auto bg-obsidian lg:h-[330vh]"
       style={{ zIndex: index + 1 }}
     >
       <div className="relative min-h-screen overflow-hidden lg:sticky lg:top-0 lg:h-screen">
